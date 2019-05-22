@@ -16,7 +16,6 @@ public class SocialSecurity extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     private BigDecimal basis;
 
     private boolean startRelief;

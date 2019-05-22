@@ -2,7 +2,7 @@ package pl.maksyms.accounting.security.user;
 
 import javax.validation.constraints.Email;
 
-public class NewAuthUserDTO {
+public class AuthUserDTO {
 
     @Email
     private String username;

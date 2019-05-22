@@ -1,12 +1,11 @@
 package pl.maksyms.accounting.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import pl.maksyms.accounting.security.role.Role;
 import pl.maksyms.accounting.security.role.service.RoleService;
 import pl.maksyms.accounting.security.user.AuthUser;
-import pl.maksyms.accounting.security.user.NewAuthUserDTO;
+import pl.maksyms.accounting.security.user.AuthUserDTO;
 import pl.maksyms.accounting.security.user.service.AuthUserService;
 
 @RestController
@@ -17,6 +16,7 @@ public class TestSecController {
     private final RoleService roleService;
 
 //    @PostMapping
+//    @ResponseStatus(HttpStatus.OK)
 //    public void signIn() {
 //
 //    }
@@ -26,7 +26,7 @@ public class TestSecController {
         Role role = new Role();
         role.setName("USER");
         roleService.save(role);
-        NewAuthUserDTO userDto = new NewAuthUserDTO();
+        AuthUserDTO userDto = new AuthUserDTO();
         userDto.setUsername("test@test.com");
         userDto.setPassword("Haslo123");
         userDto.setConfirm("Haslo123");

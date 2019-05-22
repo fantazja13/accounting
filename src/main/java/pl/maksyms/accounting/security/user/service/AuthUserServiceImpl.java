@@ -6,7 +6,7 @@ import pl.maksyms.accounting.security.role.Role;
 import pl.maksyms.accounting.security.role.RoleNotFoundException;
 import pl.maksyms.accounting.security.role.repository.RoleJPARepository;
 import pl.maksyms.accounting.security.user.AuthUser;
-import pl.maksyms.accounting.security.user.NewAuthUserDTO;
+import pl.maksyms.accounting.security.user.AuthUserDTO;
 import pl.maksyms.accounting.security.user.repository.AuthUserJPARepository;
 
 import java.util.*;
@@ -50,7 +50,7 @@ public class AuthUserServiceImpl implements AuthUserService {
     }
 
     @Override
-    public AuthUser prepareNewUserFromDTO(NewAuthUserDTO newUserDto) {
+    public AuthUser prepareNewUserFromDTO(AuthUserDTO newUserDto) {
         AuthUser user = new AuthUser();
         user.setUsername(newUserDto.getUsername());
         user.setPassword(passwordEncoder.encode(newUserDto.getPassword()));
@@ -71,6 +71,16 @@ public class AuthUserServiceImpl implements AuthUserService {
         Pattern pattern = Pattern.compile(PASSWORD_REGEXP);
         Matcher matcher = pattern.matcher(password);
         return matcher.matches();
+    }
+
+    @Override
+    public boolean passwordMatchesConfirm(AuthUserDTO authUserDTO) {
+        return authUserDTO.getPassword().equals(authUserDTO.getConfirm());
+    }
+
+    @Override
+    public boolean isUsernameTaken(String username) {
+        return userRepository.findByUsername(username).isPresent();
     }
 
     public AuthUserServiceImpl(AuthUserJPARepository userRepository, RoleJPARepository roleRepository, PasswordEncoder passwordEncoder) {

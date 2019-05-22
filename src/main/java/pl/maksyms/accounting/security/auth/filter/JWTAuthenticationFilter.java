@@ -1,4 +1,4 @@
-package pl.maksyms.accounting.security.filter;
+package pl.maksyms.accounting.security.auth.filter;
 
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;

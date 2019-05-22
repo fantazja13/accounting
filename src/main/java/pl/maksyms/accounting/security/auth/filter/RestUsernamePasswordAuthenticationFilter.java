@@ -1,4 +1,4 @@
-package pl.maksyms.accounting.security.filter;
+package pl.maksyms.accounting.security.auth.filter;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,7 +11,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import pl.maksyms.accounting.security.auth.handler.RestAuthenticationSuccessHandler;
 import pl.maksyms.accounting.security.user.AuthUser;
 
 import javax.servlet.FilterChain;
@@ -27,7 +30,7 @@ import java.time.temporal.ChronoUnit;
 import static pl.maksyms.accounting.security.SecurityConstans.EXPIRATION_TIME;
 import static pl.maksyms.accounting.security.SecurityConstans.SECRET;
 
-public class CustomUsernamePasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+public class RestUsernamePasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authManager;
 
@@ -37,7 +40,8 @@ public class CustomUsernamePasswordAuthenticationFilter extends UsernamePassword
             AuthUser authUser = new ObjectMapper().readValue(request.getInputStream(), AuthUser.class);
             return authManager.authenticate(new UsernamePasswordAuthenticationToken(authUser.getUsername(), authUser.getPassword()));
         } catch (IOException e) {
-            throw new UsernameNotFoundException("Username and/or password is invalid");
+            // TODO authentication service exception
+            throw new RuntimeException("Authentication service error");
         }
     }
 
@@ -46,7 +50,10 @@ public class CustomUsernamePasswordAuthenticationFilter extends UsernamePassword
                                             FilterChain chain, Authentication authResult) throws IOException, ServletException {
         ZonedDateTime creationTime = ZonedDateTime.now(ZoneOffset.UTC);
         ZonedDateTime expirationTime = creationTime.plus(EXPIRATION_TIME, ChronoUnit.MILLIS);
-        String token = Jwts.builder().setSubject(((AuthUser) authResult.getPrincipal()).getUsername())
+        AuthUser authUser = (AuthUser) authResult.getPrincipal();
+        String token = Jwts.builder()
+                .setSubject(authUser.getUsername())
+                .setIssuer("ms.accounting")
                 .setExpiration(Date.from(expirationTime.toInstant()))
                 .signWith(SignatureAlgorithm.HS256, SECRET)
                 .compact();
@@ -60,7 +67,7 @@ public class CustomUsernamePasswordAuthenticationFilter extends UsernamePassword
     }
 
     @Autowired
-    public CustomUsernamePasswordAuthenticationFilter(AuthenticationManager authManager) {
+    public RestUsernamePasswordAuthenticationFilter(AuthenticationManager authManager) {
         this.authManager = authManager;
     }
 }

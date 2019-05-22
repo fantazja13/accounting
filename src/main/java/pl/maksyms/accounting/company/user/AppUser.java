@@ -1,31 +1,29 @@
 package pl.maksyms.accounting.company.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import pl.maksyms.accounting.company.Company;
 import pl.maksyms.accounting.invoice.purchase.PurchaseInvoice;
 import pl.maksyms.accounting.invoice.sale.SalesInvoice;
 import pl.maksyms.accounting.security.user.AuthUser;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "app_users")
+@JsonIgnoreProperties({"createdTime", "createdBy", "updatedTime", "updatedBy"})
 public class AppUser extends Company {
 
     @OneToOne
     @JoinColumn(name = "user_id")
+    @NotNull
     private AuthUser authUser;
 
-    @Email
-    private String email;
-
-    @NotNull
     private boolean VATPayor;
 
-    @NotNull
     private IncomeTaxType incomeTax;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "buyer")
@@ -44,14 +42,6 @@ public class AppUser extends Company {
 
     public void setAuthUser(AuthUser authUser) {
         this.authUser = authUser;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public boolean isVATPayor() {
@@ -101,4 +91,5 @@ public class AppUser extends Company {
     public void setSocialSecurity(SocialSecurity socialSecurity) {
         this.socialSecurity = socialSecurity;
     }
+
 }

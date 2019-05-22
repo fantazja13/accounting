@@ -1,5 +1,6 @@
 package pl.maksyms.accounting.security.audit;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -16,11 +17,15 @@ import java.time.LocalDateTime;
 public abstract class Auditable {
 
     @CreatedDate
-    @Column(name = "created_time", nullable = false, updatable = false)
+    @Column(name = "created_time",
+            //nullable = false,
+            updatable = false)
     private LocalDateTime createdTime;
 
     @CreatedBy
-    @Column(name = "created_user_id", nullable = false, updatable = false)
+    @Column(name = "created_user_id",
+           // nullable = false,
+            updatable = false)
     private Long createdBy;
 
     @LastModifiedDate

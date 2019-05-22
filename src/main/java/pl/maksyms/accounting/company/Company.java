@@ -19,12 +19,10 @@ public abstract class Company extends Auditable {
     @NotBlank
     private String name;
 
-    @NotNull
     @Column(name = "tax_number")
     @NIP
     private String taxNumber;
 
-    @NotNull
     @OneToOne
     @JoinColumn(name = "address_id")
     private Address address;
