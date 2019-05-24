@@ -1,5 +1,7 @@
 package pl.maksyms.accounting.company.address;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import pl.maksyms.accounting.company.Company;
 import pl.maksyms.accounting.security.audit.Auditable;
 
@@ -9,6 +11,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "addresses")
+@JsonIgnoreProperties({"createdTime", "createdBy", "updatedTime", "updatedBy"})
 public class Address extends Auditable {
 
     @Id
@@ -27,6 +30,7 @@ public class Address extends Auditable {
 
     @NotNull
     @OneToOne(mappedBy = "address")
+    @JsonIgnore
     private Company company;
 
     public Long getId() {

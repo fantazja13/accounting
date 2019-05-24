@@ -2,6 +2,7 @@ package pl.maksyms.accounting.company.user.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.maksyms.accounting.company.address.service.AddressService;
 import pl.maksyms.accounting.company.user.AppUser;
 import pl.maksyms.accounting.company.user.IncomeTaxType;
 import pl.maksyms.accounting.company.user.dto.AppUserAddressDTO;
@@ -18,6 +19,7 @@ public class AppUserServiceImpl implements AppUserService {
 
     private final AppUserJPARepository userRepository;
     private final AuthUserJPARepository authUserRepository;
+    private final AddressService addressService;
 
     @Override
     public AppUser save(AppUser user) {
@@ -56,14 +58,16 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     @Override
-    public AppUser setAppUserAddressFromDTO(AppUser user, AppUserAddressDTO addressDTO) {
-        return null;
+    public void setAppUserAddressFromDTO(AppUser user, AppUserAddressDTO addressDTO) {
+        user.setAddress(addressService.prepareNewAddressFromDTO(addressDTO));
     }
 
     @Autowired
-    public AppUserServiceImpl(AppUserJPARepository userRepository, AuthUserJPARepository authUserRepository) {
+    public AppUserServiceImpl(AppUserJPARepository userRepository, AuthUserJPARepository authUserRepository,
+                              AddressService addressService) {
         this.userRepository = userRepository;
         this.authUserRepository = authUserRepository;
+        this.addressService = addressService;
     }
 
 }

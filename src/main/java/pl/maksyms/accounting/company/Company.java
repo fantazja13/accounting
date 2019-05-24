@@ -57,5 +57,6 @@ public abstract class Company extends Auditable {
 
     public void setAddress(Address address) {
         this.address = address;
+        address.setCompany(this);
     }
 }

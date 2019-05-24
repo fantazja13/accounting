@@ -22,6 +22,6 @@ public interface AppUserService {
 
     AppUser prepareNewAppUserFromDTO(AuthUser authUser, AppUserDTO dto);
 
-    AppUser setAppUserAddressFromDTO(AppUser user, AppUserAddressDTO addressDTO);
+    void setAppUserAddressFromDTO(AppUser user, AppUserAddressDTO addressDTO);
 
 }

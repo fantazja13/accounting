@@ -27,7 +27,7 @@ public class AppUserRegistrationController {
         return new ResponseEntity<>(optionalAppUser.orElse(null), HttpStatus.OK);
     }
 
-    @PostMapping
+    @PutMapping
     public ResponseEntity<?> applicationUserRegistration(@Valid @RequestBody final AppUserDTO userDTO,
                                                          @AuthenticationPrincipal AuthUser authUser) {
         AppUser savedUser = userService.save(userService.prepareNewAppUserFromDTO(authUser, userDTO));
