@@ -24,13 +24,11 @@ public class AppUserAddressController {
     @GetMapping
     public ResponseEntity<?> getUserAddress(@AuthenticationPrincipal AuthUser authUser) {
         Optional<AppUser> optAppUser = userService.findByEmail(authUser.getUsername());
-//        if (optAppUser.isPresent() && optAppUser.get().getAddress() != null) {
-//            return new ResponseEntity<>(optAppUser.get().getAddress(), HttpStatus.OK);
-//        } else {
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-        AppUser user = optAppUser.orElse(new AppUser());
-        return new ResponseEntity<>(addressService.findByCompanyId(user.getId()), HttpStatus.OK);
+        if (optAppUser.isPresent() && optAppUser.get().getAddress() != null) {
+            return new ResponseEntity<>(optAppUser.get().getAddress(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PutMapping
