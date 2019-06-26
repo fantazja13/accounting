@@ -1,5 +1,6 @@
 package pl.maksyms.accounting.security.user.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,6 +18,7 @@ public class AuthUserDetailsServiceImpl implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("No such user"));
     }
 
+    @Autowired
     public AuthUserDetailsServiceImpl(AuthUserJPARepository userRepository) {
         this.userRepository = userRepository;
     }

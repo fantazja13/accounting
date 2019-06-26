@@ -1,11 +1,9 @@
 package pl.maksyms.accounting.security.role;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "ROLES")
 public class Role {
 
     @Id
